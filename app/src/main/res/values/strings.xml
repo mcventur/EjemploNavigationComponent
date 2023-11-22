@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ejemplo Navigation Component</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="saludo">Hola %s %s</string>
+    <string name="muestra_edad">Tu edad es %d</string>
+</resources>
