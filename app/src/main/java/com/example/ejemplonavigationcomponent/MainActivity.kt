@@ -1,14 +1,15 @@
 package com.example.ejemplonavigationcomponent
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.ejemplonavigationcomponent.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -24,10 +25,13 @@ class MainActivity : AppCompatActivity() {
 
         //Esto rompe si nuestro Nav Host es un FragmentContauinerView. Lo sustituyo por las dos líneas de debajo
         //val navController = findNavController(R.id.nav_host)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         val navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        //Esta llamada gestiona automáticamente que se muestre o no el botón Arriba
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
@@ -37,24 +41,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_profile ->
-                findNavController(R.id.nav_host).navigate(R.id.profileFragment)
-            else -> super.onOptionsItemSelected(item)
-        }
-
-        return true
+        val navController = findNavController(R.id.nav_host)
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        val navController = findNavController(R.id.nav_host)
-//        return navController.navigateUp(appBarConfiguration)
-//                || super.onSupportNavigateUp()
-//    }
-
-
-
-
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
+    }
 
 
 }
